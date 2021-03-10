@@ -1,0 +1,5 @@
+<iframe 
+            sandbox="allow-top-navigation allow-scripts allow-same-origin allow-forms" 
+            height="500px" 
+            width="800px" 
+            src="<%= @referapp_url %>?email=<%= @email %>&name=<%= @name %>&base_url=<%= @base_url %>&redirect_uri=<%= @redirect_uri %>&token=<%= @token %>" ></iframe>
