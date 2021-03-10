@@ -318,13 +318,17 @@ Add this to any place in the view you want to show referral window interface
 Token's life period 24 hours, so after it would be replaced on a new one
 
 `AvalancheModule.getRedirectUri`, `AvalancheModule.getBaseUrl` -  Get needed variables's value from database
+
 `AvalancheModule.getReferAppUrl` - Manual set site for iframe
+
 `AvalancheModule.getName`, `AvalancheModule.getEmail` - Get `name` and `email` from conn.assigns (simething like SESSION) from object array `current_user`
 
 NOTICE: Some names can be different from your app's names. Make sure you replace it for used names if necessary
 
 `confirmedUserRef` - email and referral code are required - This function tells us that user confirmed invitation from his referrer. Usually called after registration.
+
 `updateReferralEmail` - email reauired - Call it after `confirmedUserRef` or if you have email confirmation, do `updateReferralEmail` after email was confirmed. This function will replace referral email for email in use.
+
 `setPremiumEvent` - email required - This function tells us that user reached premium goal for your project
 
 # Thank you!
