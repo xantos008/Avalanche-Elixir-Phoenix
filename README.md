@@ -241,10 +241,13 @@ mix deps.compile
 
 ##### Add\edit files from this repository to folders
 
-> `avalanche.ex` - demo/lib/demo
-> `avalanche_module.ex` - demo/lib/demo
-> `iframe.html.eex` - demo/lib/demo_web/templates/avalanche (create folder `avalanche` if not exists)
-> `avalanche_view.ex` - demo/lib/demo_web/views
+`avalanche.ex` - demo/lib/demo
+
+`avalanche_module.ex` - demo/lib/demo
+
+`iframe.html.eex` - demo/lib/demo_web/templates/avalanche (create folder `avalanche` if not exists)
+
+`avalanche_view.ex` - demo/lib/demo_web/views
 
 `demo` is name of your app
 `demo_web` is name of your web app where `demo` is name of your app
