@@ -1,31 +1,38 @@
 # Avalanche-Elixir-Phoenix
-This is Elixir + Phoenix framework project module of useavalanche.com referral system
+
+This is an Avalanche Referrals SDK for Elixir + Phoenix framework
 
 # Avalanche Phoenix|Elixir module
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-
 # Installation
+
 ### Step 1 - Base installation
+
 > We use [Node.js](https://nodejs.org/) v15.2.0
 
 Install the [Elixir](https://elixir-lang.org/install.html) programming language
 Install the Phoenix project generator and create your project
- ```sh
- mix archive.install hex phx_new
- mix phx.new demo
+
+```sh
+mix archive.install hex phx_new
+mix phx.new demo
 ```
-##### NOTES: 
+
+##### NOTES:
+
 - `demo` - name of your app
-- `mix phx.new demo` - if u want to use default PostgreSQL
-- `mix phx.new demo --database mysql` - if u want to use MySQL
+- `mix phx.new demo` - if you want to use default PostgreSQL
+- `mix phx.new demo --database mysql` - if you want to use MySQL
 
 ### Step 2 - Issues
-You can face with issue that default package.json and node_modules are incompatible with Node v15+
-Remove `/assets/package-lock.json` and `/assets/node_modules`
+
+There may be an issue with default package.json and node_modules being incompatible with Node v15+
+Solution: Remove `/assets/package-lock.json` and `/assets/node_modules`
 
 When change `/assets/package.json` to
+
 ```sh
 {
   "repository": {},
@@ -54,12 +61,16 @@ When change `/assets/package.json` to
   }
 }
 ```
+
 Run
+
 ```sh
 cd demo/assets
 npm install
 ```
+
 Change `/assets/webpack.config.js` to
+
 ```sh
 const path = require('path');
 const glob = require('glob');
@@ -119,54 +130,54 @@ module.exports = (env, options) => {
 ```
 
 Also dont forget to to edit your config `dev.exs` or what do you use
-Change 
+Change
+
 ```sh
       "--watch-stdin",
 ```
+
 To
+
 ```sh
       "--watch",
 ```
 
 Build your webpack setups
+
 ```sh
 node node_modules/webpack/bin/webpack.js --mode development
 ```
 
 ## Setup database if you use MySQL
+
 Go to root of your project and open file `mix.exs`
 
-Change 
+Change
+
 ```sh
 {:myxql, ">= 0.0.0"},
 ```
+
 To
+
 ```sh
 {:myxql, ">= 0.3.3"},
 ```
 
-## When run 
+## When run
+
 ```sh
 mix deps.get
 ```
 
-
-
-
-
-
-
-
-
-
-
-
 ### Instalation on exist project (next step)
+
 ```sh
 mix phx.gen.schema Avalanche avalanche cliend_id:string client_secret:string audience:string grant_type:string oauth_url:string referapp_api_url:string site_base_url:string site_redirect:string site_premium_url:string token:text token_live:utc_datetime
 ```
 
 `/ledger/lib/ledger/avalanche.ex`
+
 ```sh
 defmodule Ledger.Avalanche do
   use Ecto.Schema
@@ -198,6 +209,7 @@ end
 ```
 
 `/priv/repo/migrations/20210307204413_create_avalanche.exs` where `20210307204413` - current time, so it would be different
+
 ```sh
 defmodule Ledger.Repo.Migrations.CreateAvalanche do
   use Ecto.Migration
@@ -217,8 +229,8 @@ defmodule Ledger.Repo.Migrations.CreateAvalanche do
       add :token, :text
       add :token_live, :utc_datetime, default: fragment("now()"), null: false
 	end
-	
-	
+
+
 	execute "INSERT INTO avalanche (id, cliend_id, client_secret) VALUES ('ecfbbd68-7f84-11eb-9439-0242ac130002', 'NiwToJ2Mlkn4ubzbymnC18vM08WSXyb5', '_BxwOPM0xfZ6n2OUch75BjuJ8kvvuOzSLzZtmoGp5rCVfW3neYIQkBaTnGmMLWDM')"
 
   end
@@ -230,10 +242,13 @@ NOTICE
 `_BxwOPM0xfZ6n2OUch75BjuJ8kvvuOzSLzZtmoGp5rCVfW3neYIQkBaTnGmMLWDM` - need to be changed by your own Client Secret
 
 add to `mix.exs`
+
 ```sh
 {:httpoison, "~> 1.8"}
 ```
+
 and run
+
 ```sh
 mix deps.get
 mix deps.compile
@@ -251,7 +266,6 @@ mix deps.compile
 
 `demo` is name of your app
 `demo_web` is name of your web app where `demo` is name of your app
-
 
 Change file `router.ex` in path `demo/lib/demo_web/router.ex`
 
@@ -271,17 +285,18 @@ defmodule LedgerWeb.Router do
     plug :fetch_current_user
 	plug Demo.AvalancheModule #This need to be added
   end
-  
+
   ... your code next
 ```
-`Demo` is name of your app
 
-Add `AvalancheView` to your view_helpers function in `demo/lib/demo_web.ex`, where `demo` is name of your app
+`Demo` is the name of your app
+
+Add `AvalancheView` to your view_helpers function in `demo/lib/demo_web.ex`, where `demo` is the name of your app
 
 ```sh
-	
+
   ... your code before
-	
+
   defp view_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)
@@ -302,22 +317,23 @@ Add `AvalancheView` to your view_helpers function in `demo/lib/demo_web.ex`, whe
   end
 
   ... your code after
- 
-```
 
+```
 
 ### View
 
-Add this to any place in the view you want to show referral window interface
+Add this to any location in view where you want to show 'invite your friends' window interface
+
 ```sh
 <%= render AvalancheView, "iframe.html", referapp_url: AvalancheView.referapp_url, email: AvalancheView.email(@conn), name: AvalancheView.name(@conn), base_url: AvalancheView.base_url, redirect_uri: AvalancheView.redirect_uri, token: AvalancheView.token %>
 ```
 
 ### Functions for usage
-`AvalancheModule.getToken` - Token generation for your app in our system. After successful generation of token the function adds token and current time to your database.
-Token's life period 24 hours, so after it would be replaced on a new one
 
-`AvalancheModule.getRedirectUri`, `AvalancheModule.getBaseUrl` -  Get needed variables's value from database
+`AvalancheModule.getToken` - Token generation for your app in our system. After a successful generation of a token, the function adds the token and a current time to your database.
+Token's life period is 24 hours, so after it expires it would be replaced by a new one
+
+`AvalancheModule.getRedirectUri`, `AvalancheModule.getBaseUrl` - Get needed variables's value from database
 
 `AvalancheModule.getReferAppUrl` - Manual set site for iframe
 
@@ -325,10 +341,10 @@ Token's life period 24 hours, so after it would be replaced on a new one
 
 NOTICE: Some names can be different from your app's names. Make sure you replace it for used names if necessary
 
-`confirmedUserRef` - email and referral code are required - This function tells us that user confirmed invitation from his referrer. Usually called after registration.
+`confirmedUserRef` - email and referral code are required - This function tells us that user confirmed invitation from his referrer. Usually called immediately after registration.
 
-`updateReferralEmail` - email reauired - Call it after `confirmedUserRef` or if you have email confirmation, do `updateReferralEmail` after email was confirmed. This function will replace referral email for email in use.
+`updateReferralEmail` - email required - Call it after `confirmedUserRef` or if you have email confirmation, do `updateReferralEmail` after email was confirmed. This function will replace referral email for email in use.
 
-`setPremiumEvent` - email required - This function tells us that user reached premium goal for your project
+`setPremiumEvent` - email required - This function tells us that user reached premium conversion goal for your project. This can be the moment when you've received payment. Another option is to handle this externally via an integration. We can provide support for that.
 
 # Thank you!
